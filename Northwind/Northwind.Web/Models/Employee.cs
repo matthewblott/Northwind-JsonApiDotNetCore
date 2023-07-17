@@ -7,10 +7,18 @@ using JsonApiDotNetCore.Resources.Annotations;
 [Resource]
 public class Employee : Identifiable<int>
 {
-  //[NotMapped]
-  //public int Id { get; set; }
+  [HasOne]
+  public Employee? Manager { get; set; }
+  
+  [HasMany]
+  public ICollection<Employee>? DirectReports { get; private set; } = new HashSet<Employee>();
+  
   [Attr]
   public string FirstName { get; set; }
   [Attr]
   public string LastName { get; set; }
+
+  [NotMapped]
+  public int? ManagerId { get; set; }
+  
 }

@@ -32,6 +32,6 @@ var app = builder.Build();
 app.UseRouting();
 app.UseJsonApi();
 app.MapControllers();
-//app.MapDefaultControllerRoute();
+app.MapDefaultControllerRoute();
 
 app.Run();

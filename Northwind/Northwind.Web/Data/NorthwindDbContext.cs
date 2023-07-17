@@ -13,11 +13,11 @@ public class NorthwindDbContext : DbContext
   {
   }
 
-  protected override void OnModelCreating(ModelBuilder modelBuilder)
+  protected override void OnModelCreating(ModelBuilder builder)
   {
-    modelBuilder.Entity<Employee>().Property(x => x.Id).HasColumnName("EmployeeId");
+    builder.Entity<Employee>().Property(x => x.Id).HasColumnName("EmployeeId");
+    builder.Entity<Employee>().Property(x => x.ManagerId).HasColumnName("ReportsTo");
     
-    //modelBuilder.ApplyConfigurationsFromAssembly(typeof(NorthwindDbContext).Assembly);
-    base.OnModelCreating(modelBuilder);
+    base.OnModelCreating(builder);
   }
 }
