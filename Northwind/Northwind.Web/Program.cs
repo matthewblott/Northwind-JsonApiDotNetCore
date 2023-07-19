@@ -1,4 +1,6 @@
+using System.Reflection.Metadata;
 using System.Text;
+using System.Text.Json;
 using JsonApiDotNetCore.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -22,12 +24,12 @@ var settings = new JwtSettings();
 configSection.Bind(settings);
 
 builder.Services.AddSingleton<IConfiguration>(_ => configuration);
-
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddOptions();
 builder.Services.Configure<JwtSettings>(configSection);
 builder.Services.AddMvc();
+
 builder.Services.AddAuthentication(options =>
 {
   options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,19 +71,18 @@ builder.Services.AddDbContext<NorthwindDbContext>(options =>
   );
 });
 
+builder.Services.AddControllers();
+
 // JsonApiDotNetCore
-builder.Services.AddJsonApi<NorthwindDbContext>(
-    options =>
-    {
-      options.Namespace = "api";
-      options.UseRelativeLinks = true;
-      options.IncludeTotalResourceCount = true;
-      options.IncludeExceptionStackTraceInErrors = true;
-      options.IncludeRequestBodyInErrors = true;
-      options.SerializerOptions.WriteIndented = true;
-    },
-    discovery => discovery.AddCurrentAssembly()
-);
+builder.Services.AddJsonApi<NorthwindDbContext>(options =>
+{
+  options.Namespace = "api";
+  options.UseRelativeLinks = true;
+  options.IncludeTotalResourceCount = true;
+  options.IncludeExceptionStackTraceInErrors = true;
+  options.IncludeRequestBodyInErrors = true;
+  options.SerializerOptions.WriteIndented = true; 
+}, discovery => discovery.AddCurrentAssembly());
 
 var app = builder.Build();
 
@@ -89,10 +90,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseJsonApi();
-// app.MapControllers();
-// app.MapDefaultControllerRoute();
-app.MapControllerRoute(
-  name: "default",
-  pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
+app.MapDefaultControllerRoute();
 
 app.Run();

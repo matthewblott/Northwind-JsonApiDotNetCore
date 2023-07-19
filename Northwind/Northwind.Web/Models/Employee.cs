@@ -3,6 +3,7 @@ namespace Northwind.Web.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using JsonApiDotNetCore.Resources;
 using JsonApiDotNetCore.Resources.Annotations;
+using Microsoft.AspNetCore.Authorization;
 
 [Resource]
 public class Employee : Identifiable<int>
