@@ -1,9 +1,9 @@
 namespace Northwind.Web.Models;
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using JsonApiDotNetCore.Resources;
 using JsonApiDotNetCore.Resources.Annotations;
-using Microsoft.AspNetCore.Authorization;
 
 [Resource]
 public class Employee : Identifiable<int>
@@ -13,10 +13,14 @@ public class Employee : Identifiable<int>
   
   [HasMany]
   public ICollection<Employee>? DirectReports { get; private set; } = new HashSet<Employee>();
-  
-  [Attr]
+
+  [Attr] 
+  [MaxLength(10)] 
+  [Required] 
   public string FirstName { get; set; }
-  [Attr]
+  [Attr] 
+  [MaxLength(10)] 
+  [Required] 
   public string LastName { get; set; }
 
   [NotMapped]
